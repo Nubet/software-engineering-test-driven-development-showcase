@@ -28,6 +28,18 @@ class GameTest {
     }
 
     @Test
+    void shouldScoreSpare() {
+        Game game = new Game();
+
+        game.roll(5);
+        game.roll(5);
+        game.roll(3);
+        rollMany(game, 17, 0);
+
+        assertEquals(13, game.score());
+    }
+
+    @Test
     void shouldThrowExceptionForNegativePins() {
         Game game = new Game();
 
