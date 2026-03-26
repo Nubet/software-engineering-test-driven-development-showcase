@@ -5,7 +5,8 @@ public class Game {
     private int currentRoll = 0;
 
     public void roll(int pins) {
-        if (pins < 0 || pins > 10) throw new IllegalArgumentException();
+        validatePinsRange(pins);
+        validateFramePins(pins);
         rolls[currentRoll++] = pins;
     }
 
@@ -47,5 +48,41 @@ public class Game {
 
     private int sumOfBallsInFrame(int rollIndex) {
         return rolls[rollIndex] + rolls[rollIndex + 1];
+    }
+
+    private void validatePinsRange(int pins) {
+        if (pins < 0 || pins > 10) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void validateFramePins(int pins) {
+        int firstRollInOpenFrame = firstRollInOpenNonTenthFrame();
+
+        if (firstRollInOpenFrame != -1 && firstRollInOpenFrame + pins > 10) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private int firstRollInOpenNonTenthFrame() {
+        int frame = 0;
+        int rollIndex = 0;
+
+        while (frame < 9 && rollIndex < currentRoll) {
+            if (isStrike(rollIndex)) {
+                rollIndex += 1;
+                frame += 1;
+                continue;
+            }
+
+            if (rollIndex + 1 < currentRoll) {
+                rollIndex += 2;
+                frame += 1;
+            } else {
+                return rolls[rollIndex];
+            }
+        }
+
+        return -1;
     }
 }
