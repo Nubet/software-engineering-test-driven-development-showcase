@@ -10,18 +10,41 @@ public class Game {
 
     public int score() {
         int score = 0;
-        int cursor = 0;
+        int rollIndex = 0;
 
         for (int frame = 0; frame < 10; frame++) {
-            if (rolls[cursor] == 10) {
-                score += 10 + rolls[cursor + 1] + rolls[cursor + 2];
-                cursor += 1;
+            if (isStrike(rollIndex)) {
+                score += 10 + strikeBonus(rollIndex);
+                rollIndex += 1;
+            } else if (isSpare(rollIndex)) {
+                score += 10 + spareBonus(rollIndex);
+                rollIndex += 2;
             } else {
-                score += rolls[cursor] + rolls[cursor + 1];
-                cursor += 2;
+                score += sumOfBallsInFrame(rollIndex);
+                rollIndex += 2;
             }
         }
 
         return score;
+    }
+
+    private boolean isStrike(int rollIndex) {
+        return rolls[rollIndex] == 10;
+    }
+
+    private boolean isSpare(int rollIndex) {
+        return sumOfBallsInFrame(rollIndex) == 10;
+    }
+
+    private int strikeBonus(int rollIndex) {
+        return rolls[rollIndex + 1] + rolls[rollIndex + 2];
+    }
+
+    private int spareBonus(int rollIndex) {
+        return rolls[rollIndex + 2];
+    }
+
+    private int sumOfBallsInFrame(int rollIndex) {
+        return rolls[rollIndex] + rolls[rollIndex + 1];
     }
 }
