@@ -41,6 +41,15 @@ class GameTest {
         assertThrows(IllegalArgumentException.class, () -> game.roll(11));
     }
 
+    @Test
+    void shouldThrowExceptionWhenMoreThanTenPinsAreKnockedDownInOneFrame() {
+        Game game = new Game();
+
+        game.roll(8);
+
+        assertThrows(IllegalArgumentException.class, () -> game.roll(5));
+    }
+
     private void rollMany(Game game, int times, int pins) {
         for (int i = 0; i < times; i++) {
             game.roll(pins);
