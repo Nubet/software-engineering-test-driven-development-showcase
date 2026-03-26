@@ -36,7 +36,7 @@ class GameTest {
         game.roll(3);
         rollMany(game, 17, 0);
 
-        assertEquals(13, game.score());
+        assertEquals(16, game.score());
     }
 
     @Test
